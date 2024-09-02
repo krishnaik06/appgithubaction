@@ -1,0 +1,33 @@
+name: Update README
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt  # if needed
+
+      - name: Generate README
+        run: python generate_readme.py
+
+      - name: Commit and Push changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Auto-update README.md"
+          file_pattern: README.md
